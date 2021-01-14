@@ -22,4 +22,6 @@ public class ApiModelDto {
     private String version;
     @Id
     private String id;
+    private String initService;
+    private String dest;
 }

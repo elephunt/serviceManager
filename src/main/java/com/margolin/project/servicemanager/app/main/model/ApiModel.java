@@ -11,4 +11,6 @@ public class ApiModel {
     private String serviceName;
     private String payload;
     private String version;
+    private String initService;
+    private String destService;
 }

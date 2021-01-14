@@ -15,7 +15,6 @@ public class ServiceModelDto {
     @Id
     private String id;
     private String name;
-    private List<ServiceModelDto> services;
     private List<ApiModelDto> apis;
     private String version;
     @Transient

@@ -8,7 +8,6 @@ import java.util.List;
 public class ServiceModel {
 
     private String name;
-    private List<ServiceModel> services;
     private String id;
     private List<ApiModel> apis;
     private String version;
