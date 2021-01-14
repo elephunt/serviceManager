@@ -4,6 +4,7 @@ import com.margolin.project.servicemanager.app.main.model.ApiModel;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
@@ -15,6 +16,7 @@ public class ApiModelDto {
     private String name;
     private String path;
     private String action;
+    @Indexed(unique = true)
     private String serviceName;
     private String payload;
     private String version;
