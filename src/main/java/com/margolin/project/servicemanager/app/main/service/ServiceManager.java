@@ -29,5 +29,8 @@ public class ServiceManager implements IServiceManager {
        return modelDto;
    }
 
-
+    @Override
+    public ServiceModelDto updateModel(ServiceModelDto updatedServiceModel) {
+         return this.serviceRepository.save(updatedServiceModel);
+    }
 }

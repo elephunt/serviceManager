@@ -6,4 +6,6 @@ public interface IServiceManager {
     ServiceModelDto getServiceModel(String id);
 
     ServiceModelDto saveServiceModel(ServiceModelDto serviceModelDto);
+
+    ServiceModelDto updateModel(ServiceModelDto updatedServiceModel);
 }
