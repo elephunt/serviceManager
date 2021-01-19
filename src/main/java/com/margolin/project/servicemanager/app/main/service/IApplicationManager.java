@@ -1,6 +1,7 @@
 package com.margolin.project.servicemanager.app.main.service;
 
 import com.github.fge.jsonpatch.JsonPatch;
+import com.margolin.project.servicemanager.app.main.persist.ApiModelDto;
 import com.margolin.project.servicemanager.app.main.persist.ServiceModelDto;
 
 import java.util.List;
@@ -13,4 +14,5 @@ public interface IApplicationManager {
 
     ServiceModelDto updateService(ServiceModelDto updatedServiceModel);
 
+    List<ApiModelDto> getApiByName(String name);
 }

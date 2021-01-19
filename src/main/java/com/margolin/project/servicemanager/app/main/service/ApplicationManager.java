@@ -1,6 +1,7 @@
 package com.margolin.project.servicemanager.app.main.service;
 
 import com.github.fge.jsonpatch.JsonPatch;
+import com.margolin.project.servicemanager.app.main.persist.ApiModelDto;
 import com.margolin.project.servicemanager.app.main.persist.ServiceModelDto;
 import org.springframework.stereotype.Service;
 
@@ -28,5 +29,10 @@ public class ApplicationManager implements IApplicationManager {
     @Override
     public ServiceModelDto updateService(ServiceModelDto updatedServiceModel) {
         return  serviceManager.updateModel(updatedServiceModel);
+    }
+
+    @Override
+    public List<ApiModelDto> getApiByName(String name) {
+        return  this.getApiByName(name);
     }
 }

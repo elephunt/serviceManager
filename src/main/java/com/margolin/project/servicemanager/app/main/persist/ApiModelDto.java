@@ -13,6 +13,7 @@ public class ApiModelDto {
 
     @Transient
     private ApiModel apiModelRequest;
+    @Indexed
     private String name;
     private String path;
     private String action;
