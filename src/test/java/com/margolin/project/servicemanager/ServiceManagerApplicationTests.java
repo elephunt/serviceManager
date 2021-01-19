@@ -91,5 +91,24 @@ class ServiceManagerApplicationTests {
         Assertions.assertNotNull(serviceModelResponseEntity.getBody());
         ServiceModel responseEntityBody = serviceModelResponseEntity.getBody();
         Assertions.assertEquals(responseEntityBody.getVersion(),"4");
+        ObjectNode addApi = JsonNodeFactory.instance.objectNode();
+        ObjectNode value = JsonNodeFactory.instance.objectNode();
+        value.put("name","getService");
+        value.put("path","");
+        value.put("action","GET");
+        value.put("serviceName","serviceManager");
+        value.put("version","1");
+        value.put("initService","serviceManager");
+        value.put("destService","serviceManager");
+        addApi.put("op","add");
+        addApi.put("path","/apis/-");
+        addApi.put("value",value);
+        ArrayNode addApiArray = JsonNodeFactory.instance.arrayNode();
+        addApiArray.add(addApi);
+        JsonPatch addAdiPatchPayload = JsonPatch.fromJson(addApiArray);
+        ResponseEntity<ServiceModel> patchedServiceModel = this.managerController.updateService(addAdiPatchPayload, idServiceManager);
+        Assertions.assertNotNull(patchedServiceModel.getBody());
+        ServiceModel body = patchedServiceModel.getBody();
+        Assertions.assertEquals(1,body.getApis().size());
     }
 }
