@@ -1,6 +1,6 @@
 package com.margolin.project.servicemanager.app.main.service;
 
-import com.github.fge.jsonpatch.JsonPatch;
+import com.margolin.project.servicemanager.app.main.model.ApiModel;
 import com.margolin.project.servicemanager.app.main.persist.ApiModelDto;
 import com.margolin.project.servicemanager.app.main.persist.ServiceModelDto;
 import org.springframework.stereotype.Service;
@@ -11,9 +11,10 @@ import java.util.List;
 public class ApplicationManager implements IApplicationManager {
 
     final IServiceManager serviceManager;
-
-    public ApplicationManager(IServiceManager serviceManager) {
+    final ApiService apiService;
+    public ApplicationManager(IServiceManager serviceManager, ApiService apiService) {
         this.serviceManager = serviceManager;
+        this.apiService = apiService;
     }
 
     @Override
@@ -23,6 +24,8 @@ public class ApplicationManager implements IApplicationManager {
 
     @Override
     public ServiceModelDto createServiceModel(ServiceModelDto serviceModelDto) {
+        List<ApiModelDto> updatedApis = this.apiService.saveApis(serviceModelDto.getApis());
+        serviceModelDto.setApis(updatedApis);
         return serviceManager.saveServiceModel(serviceModelDto);
     }
 
@@ -33,6 +36,6 @@ public class ApplicationManager implements IApplicationManager {
 
     @Override
     public List<ApiModelDto> getApiByName(String name) {
-        return  this.getApiByName(name);
+        return  this.apiService.getApiByName(name);
     }
 }

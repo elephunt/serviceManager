@@ -30,8 +30,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -53,6 +58,12 @@ class ServiceManagerApplicationTests {
             ServiceModel serviceManager = new ServiceModel();
             serviceManager.setName("serviceManager");
             serviceManager.setVersion("1");
+            ApiModel apiModel = new ApiModel();
+            apiModel.setPath("/");
+            apiModel.setName("Save Service");
+            apiModel.setVersion("0");
+            apiModel.setInitService("serviceManager");
+            serviceManager.setApis(Collections.singletonList(apiModel));
             ServiceModel flowManager = new ServiceModel();
             flowManager.setName("flowManager");
             flowManager.setVersion("2");
@@ -64,6 +75,7 @@ class ServiceManagerApplicationTests {
             ServiceModel flowManagerServiceResponseBody = flowManagerServiceResponse.getBody();
             Assertions.assertEquals("serviceManager",serviceModel.getName());
             Assertions.assertEquals("flowManager",flowManagerServiceResponseBody.getName());
+            Assertions.assertEquals(1,serviceModel.getApis().size());
             idServiceManager = serviceModel.getId();
             idFlowManager = flowManagerServiceResponseBody.getId();
             created = true;
@@ -109,6 +121,19 @@ class ServiceManagerApplicationTests {
         ResponseEntity<ServiceModel> patchedServiceModel = this.managerController.updateService(addAdiPatchPayload, idServiceManager);
         Assertions.assertNotNull(patchedServiceModel.getBody());
         ServiceModel body = patchedServiceModel.getBody();
-        Assertions.assertEquals(1,body.getApis().size());
+        Assertions.assertEquals(2,body.getApis().size());
+    }
+
+    @Test
+    public void getApi(){
+        ResponseEntity<List<ApiModel>> api = this.managerController.getApi("service");
+        Assertions.assertNotNull(api);
+        List<ApiModel> apis = api.getBody();
+        Assertions.assertFalse(CollectionUtils.isEmpty(apis));
+        boolean found = false;
+        for (ApiModel apiModel : apis) {
+            found = found || apiModel.getName().contains("service");
+        }
+        Assertions.assertTrue(found);
     }
 }
