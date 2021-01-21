@@ -1,13 +1,16 @@
 package com.margolin.project.servicemanager.app.main.service;
 
+import com.margolin.project.servicemanager.app.main.log.LogUtils;
 import com.margolin.project.servicemanager.app.main.model.ApiModel;
 import com.margolin.project.servicemanager.app.main.persist.ApiModelDto;
 import com.margolin.project.servicemanager.app.main.persist.ServiceModelDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Slf4j
 public class ApplicationManager implements IApplicationManager {
 
     final IServiceManager serviceManager;
@@ -24,6 +27,7 @@ public class ApplicationManager implements IApplicationManager {
 
     @Override
     public ServiceModelDto createServiceModel(ServiceModelDto serviceModelDto) {
+        LogUtils.log(log,"Saving model ",serviceModelDto);
         List<ApiModelDto> updatedApis = this.apiService.saveApis(serviceModelDto.getApis());
         serviceModelDto.setApis(updatedApis);
         return serviceManager.saveServiceModel(serviceModelDto);
