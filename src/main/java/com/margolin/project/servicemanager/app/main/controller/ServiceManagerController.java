@@ -36,9 +36,9 @@ public class ServiceManagerController {
         this.mapperApiModel = mapperApiModel;
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ServiceModel> getServiceById(@PathVariable String id){
-        ServiceModelDto service = applicationManager.getServiceById(id);
+    @GetMapping("/{serviceId}")
+    public ResponseEntity<ServiceModel> getServiceById(@PathVariable String serviceId){
+        ServiceModelDto service = applicationManager.getServiceById(serviceId);
         ServiceModel serviceModel = mapperServiceModel.toModel(service);
         return ResponseEntity.ok(serviceModel);
     }
@@ -51,9 +51,9 @@ public class ServiceManagerController {
         return ResponseEntity.ok(createdModel);
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<ServiceModel> updateService(@RequestBody JsonPatch patchModels, @PathVariable String id) throws PatchException {
-        ServiceModelDto dto = patchServiceModel(patchModels, id);
+    @PatchMapping("/{serviceId}")
+    public ResponseEntity<ServiceModel> updateService(@RequestBody JsonPatch patchModels, @PathVariable String serviceId) throws PatchException {
+        ServiceModelDto dto = patchServiceModel(patchModels, serviceId);
         ServiceModelDto updatedResult = this.applicationManager.updateService(dto);
         ServiceModel modelDto = this.mapperServiceModel.toModel(updatedResult);
         return ResponseEntity.ok(modelDto);
@@ -66,8 +66,8 @@ public class ServiceManagerController {
         return ResponseEntity.ok(apiModels);
     }
 
-    private ServiceModelDto patchServiceModel(@RequestBody JsonPatch patchModels, @PathVariable String id) throws PatchException {
-        ServiceModelDto serviceById = this.applicationManager.getServiceById(id);
+    private ServiceModelDto patchServiceModel(@RequestBody JsonPatch patchModels, @PathVariable String serviceId) throws PatchException {
+        ServiceModelDto serviceById = this.applicationManager.getServiceById(serviceId);
         ServiceModel serviceModel = this.mapperServiceModel.toModel(serviceById);
         ServiceModel patchedModel = null;
         try {
