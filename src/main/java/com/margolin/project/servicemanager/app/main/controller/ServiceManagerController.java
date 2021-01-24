@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.github.fge.jsonpatch.JsonPatchException;
-import com.margolin.project.servicemanager.app.main.exceptions.PatchException;
+import com.margolin.project.servicemanager.app.main.exceptions.GeneralException;
 import com.margolin.project.servicemanager.app.main.mappers.IMapperApiModel;
 import com.margolin.project.servicemanager.app.main.mappers.IMapperPatchModel;
 import com.margolin.project.servicemanager.app.main.mappers.IMapperServiceModel;
@@ -14,12 +14,15 @@ import com.margolin.project.servicemanager.app.main.model.ServiceModel;
 import com.margolin.project.servicemanager.app.main.persist.ApiModelDto;
 import com.margolin.project.servicemanager.app.main.persist.ServiceModelDto;
 import com.margolin.project.servicemanager.app.main.service.IApplicationManager;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController("/service/v1/")
+@RestController("/v1")
+@Slf4j
 public class ServiceManagerController {
 
     private final IApplicationManager applicationManager;
@@ -52,7 +55,7 @@ public class ServiceManagerController {
     }
 
     @PatchMapping("/{serviceId}")
-    public ResponseEntity<ServiceModel> updateService(@RequestBody JsonPatch patchModels, @PathVariable String serviceId) throws PatchException {
+    public ResponseEntity<ServiceModel> updateService(@RequestBody JsonPatch patchModels, @PathVariable String serviceId) throws GeneralException {
         ServiceModelDto dto = patchServiceModel(patchModels, serviceId);
         ServiceModelDto updatedResult = this.applicationManager.updateService(dto);
         ServiceModel modelDto = this.mapperServiceModel.toModel(updatedResult);
@@ -61,21 +64,21 @@ public class ServiceManagerController {
 
     @GetMapping("/apis")
     public ResponseEntity<List<ApiModel>> getApi(@RequestParam String name){
-       List<ApiModelDto> models =  this.applicationManager.getApiByName(name);
+        log.info("In get apis");
+        List<ApiModelDto> models =  this.applicationManager.getApiByName(name);
         List<ApiModel> apiModels = mapperApiModel.toModel(models);
         return ResponseEntity.ok(apiModels);
     }
 
-    private ServiceModelDto patchServiceModel(@RequestBody JsonPatch patchModels, @PathVariable String serviceId) throws PatchException {
+    private ServiceModelDto patchServiceModel(@RequestBody JsonPatch patchModels, @PathVariable String serviceId) throws GeneralException {
         ServiceModelDto serviceById = this.applicationManager.getServiceById(serviceId);
         ServiceModel serviceModel = this.mapperServiceModel.toModel(serviceById);
         ServiceModel patchedModel = null;
         try {
             patchedModel = this.applyPatchToCustomer(patchModels, serviceModel);
         } catch (JsonPatchException | JsonProcessingException e) {
-            PatchException patchException = new PatchException();
-            patchException.setPatchError(e.getMessage());
-            throw patchException;
+            GeneralException generalException = new GeneralException(e.getMessage(), HttpStatus.BAD_REQUEST);
+            throw generalException;
         }
         return this.mapperServiceModel.toDto(patchedModel);
     }
