@@ -70,7 +70,7 @@ public class ServiceManagerController {
         return ResponseEntity.ok(apiModels);
     }
 
-    private ServiceModelDto patchServiceModel(@RequestBody JsonPatch patchModels, @PathVariable String serviceId) throws GeneralException {
+    private ServiceModelDto patchServiceModel( JsonPatch patchModels,  String serviceId) throws GeneralException {
         ServiceModelDto serviceById = this.applicationManager.getServiceById(serviceId);
         ServiceModel serviceModel = this.mapperServiceModel.toModel(serviceById);
         ServiceModel patchedModel = null;
