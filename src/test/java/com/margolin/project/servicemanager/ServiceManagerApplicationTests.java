@@ -18,6 +18,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,18 +39,12 @@ class ServiceManagerApplicationTests {
     @BeforeEach
     public void insertData(){
         if(!created){
-            ServiceModel serviceManager = new ServiceModel();
-            serviceManager.setName("serviceManager");
-            serviceManager.setVersion("1");
-            ApiModel apiModel = new ApiModel();
+            ApiModel apiModel = new ApiModel("getService","/","GET","serviceManager","0");
             apiModel.setPath("/");
-            apiModel.setName("Save Service");
-            apiModel.setVersion("0");
             apiModel.setInitService("serviceManager");
-            serviceManager.setApis(Collections.singletonList(apiModel));
-            ServiceModel flowManager = new ServiceModel();
-            flowManager.setName("flowManager");
-            flowManager.setVersion("2");
+            ServiceModel serviceManager = new ServiceModel("serviceManager",Collections.singletonList(apiModel),"0");
+            ApiModel apiModel1 = new ApiModel("getFlow","/","GET","flowManager","0");
+            ServiceModel flowManager = new ServiceModel("flowManager", Arrays.asList(apiModel1),"0");
             ResponseEntity<ServiceModel> serviceManagerServiceResponse = this.managerController.createService(serviceManager);
             ResponseEntity<ServiceModel> flowManagerServiceResponse = this.managerController.createService(flowManager);
             Assertions.assertNotNull(serviceManagerServiceResponse.getBody());

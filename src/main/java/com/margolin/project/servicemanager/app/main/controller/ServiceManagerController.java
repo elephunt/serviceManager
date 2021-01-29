@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController("/v1")
@@ -47,7 +48,7 @@ public class ServiceManagerController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<ServiceModel> createService(@RequestBody ServiceModel serviceModel){
+    public ResponseEntity<ServiceModel> createService(@RequestBody @Valid ServiceModel serviceModel){
         ServiceModelDto serviceModelDto = mapperServiceModel.toDto(serviceModel);
         ServiceModelDto createServiceModelDto = this.applicationManager.createServiceModel(serviceModelDto);
         ServiceModel createdModel = mapperServiceModel.toModel(createServiceModelDto);
