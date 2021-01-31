@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.awt.dnd.DnDConstants;
@@ -17,7 +18,7 @@ public class ServiceModel {
     @NotNull
     private String name;
     private String id;
-    @NotNull
+    @Valid
     private List<ApiModel> apis;
     @NotNull
     private String version;

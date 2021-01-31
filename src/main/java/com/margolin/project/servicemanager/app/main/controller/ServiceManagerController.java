@@ -21,6 +21,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController()
@@ -43,7 +46,7 @@ public class ServiceManagerController {
     }
 
     @GetMapping("/{serviceId}")
-    public ResponseEntity<ServiceModel> getServiceById(@PathVariable String serviceId){
+    public ResponseEntity<ServiceModel> getServiceById(@PathVariable @Valid @NotBlank(message = "Service id cannot be null") String serviceId){
         ServiceModelDto service = applicationManager.getServiceById(serviceId);
         ServiceModel serviceModel = mapperServiceModel.toModel(service);
         return ResponseEntity.ok(serviceModel);
@@ -58,7 +61,7 @@ public class ServiceManagerController {
     }
 
     @PatchMapping("/{serviceId}")
-    public ResponseEntity<ServiceModel> updateService(@RequestBody JsonPatch patchModels, @PathVariable String serviceId) throws GeneralException {
+    public ResponseEntity<ServiceModel> updateService(@RequestBody JsonPatch patchModels, @PathVariable @NotBlank(message =  "Service id cannot be null") String serviceId) throws GeneralException {
         ServiceModelDto dto = patchServiceModel(patchModels, serviceId);
         ServiceModelDto updatedResult = this.applicationManager.updateService(dto);
         ServiceModel modelDto = this.mapperServiceModel.toModel(updatedResult);
@@ -66,7 +69,7 @@ public class ServiceManagerController {
     }
 
     @GetMapping("/apis")
-    public ResponseEntity<List<ApiModel>> getApi(@RequestParam String name){
+    public ResponseEntity<List<ApiModel>> getApi(@RequestParam @Valid @NotBlank(message = "Api name cannot be empty") String name){
         log.info("In get apis");
         List<ApiModelDto> models =  this.applicationManager.getApiByName(name);
         List<ApiModel> apiModels = mapperApiModel.toModel(models);

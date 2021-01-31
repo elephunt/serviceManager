@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -34,6 +36,14 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, error,
                 new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
+    @ExceptionHandler(value = {ConstraintViolationException.class})
+    protected ResponseEntity<Object> handle(ConstraintViolationException exception , WebRequest webRequest){
+        List<String> validationsError = exception.getConstraintViolations().stream().map(ConstraintViolation::getMessageTemplate).collect(Collectors.toList());
+        ErrorResponse error = new ErrorResponse("Input error", validationsError,null);
+        return handleExceptionInternal(exception, error,
+                new HttpHeaders(), HttpStatus.BAD_REQUEST, webRequest);
+
+    }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -47,4 +57,6 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, error,
                 new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
+
+
 }
