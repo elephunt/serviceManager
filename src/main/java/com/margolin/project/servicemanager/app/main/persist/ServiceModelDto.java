@@ -1,6 +1,5 @@
 package com.margolin.project.servicemanager.app.main.persist;
 
-import com.margolin.project.servicemanager.app.main.model.ApiModel;
 import com.margolin.project.servicemanager.app.main.model.ServiceModel;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -30,5 +29,6 @@ public class ServiceModelDto {
     private String version;
     @Transient
     private ServiceModel serviceModelRequest;
+    private List<DbModelDto> dbModels;
 
 }

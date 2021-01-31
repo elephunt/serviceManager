@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -35,5 +36,10 @@ public class ServiceManager implements IServiceManager {
     @Override
     public ServiceModelDto updateModel(ServiceModelDto updatedServiceModel) {
          return this.serviceRepository.save(updatedServiceModel);
+    }
+
+    @Override
+    public List<ServiceModelDto> findServiceThatHaveApi(String apiName){
+       return this.serviceRepository.findByApiName(apiName);
     }
 }
