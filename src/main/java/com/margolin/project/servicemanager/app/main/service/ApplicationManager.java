@@ -22,14 +22,13 @@ public class ApplicationManager implements IApplicationManager {
 
     @Override
     public ServiceModelDto getServiceById(String id) {
-        return serviceManager.getServiceModel(id);
+        ServiceModelDto serviceModel = serviceManager.getServiceModel(id);
+        return serviceModel;
     }
 
     @Override
     public ServiceModelDto createServiceModel(ServiceModelDto serviceModelDto) {
         LogUtils.log(log,"Saving model ",serviceModelDto);
-        List<ApiModelDto> updatedApis = this.apiService.saveApis(serviceModelDto.getApis());
-        serviceModelDto.setApis(updatedApis);
         return serviceManager.saveServiceModel(serviceModelDto);
     }
 

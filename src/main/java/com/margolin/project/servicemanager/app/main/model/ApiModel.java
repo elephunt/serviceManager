@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -31,4 +32,5 @@ public class ApiModel {
     private String version;
     private String initService;
     private String destService;
+    private LocalDate addedOn;
 }

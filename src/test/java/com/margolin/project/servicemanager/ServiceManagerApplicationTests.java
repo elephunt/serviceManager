@@ -104,13 +104,13 @@ class ServiceManagerApplicationTests {
 
     @Test
     public void getApi(){
-        ResponseEntity<List<ApiModel>> api = this.managerController.getApi("service");
+        ResponseEntity<List<ApiModel>> api = this.managerController.getApi("get");
         Assertions.assertNotNull(api);
         List<ApiModel> apis = api.getBody();
         Assertions.assertFalse(CollectionUtils.isEmpty(apis));
         boolean found = false;
         for (ApiModel apiModel : apis) {
-            found = found || apiModel.getName().contains("service");
+            found = found || apiModel.getName().contains("get");
         }
         Assertions.assertTrue(found);
     }

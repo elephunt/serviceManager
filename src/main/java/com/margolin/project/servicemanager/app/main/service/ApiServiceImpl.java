@@ -1,42 +1,31 @@
 package com.margolin.project.servicemanager.app.main.service;
 
-import com.margolin.project.servicemanager.app.main.exceptions.GeneralException;
 import com.margolin.project.servicemanager.app.main.persist.ApiModelDto;
-import com.margolin.project.servicemanager.app.main.repository.ApiRepository;
+import com.margolin.project.servicemanager.app.main.persist.ServiceModelDto;
+import com.margolin.project.servicemanager.app.main.repository.ServiceRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 public class ApiServiceImpl implements ApiService {
 
     final
-    ApiRepository apiRepository;
+    ServiceRepository apiRepository;
 
-    public ApiServiceImpl(ApiRepository apiRepository) {
+    public ApiServiceImpl(ServiceRepository apiRepository) {
         this.apiRepository = apiRepository;
     }
 
-    @Override
-    public List<ApiModelDto> getApiByName(String name){
-        return  this.apiRepository.findByNameLike(name);
-    }
 
     @Override
-    public List<ApiModelDto> saveApis(List<ApiModelDto> apis) {
-        if(CollectionUtils.isEmpty(apis)){
-            log.info("List of apis is empty");
-            return Collections.emptyList();
-        }
-        apis.stream().filter(ap -> !ObjectUtils.isEmpty(ap.getName()))
-                .forEach(ap -> ap.setName(ap.getName().toLowerCase()));
-        return this.apiRepository.saveAll(apis);
-    }
+    public List<ApiModelDto> getApiByName(String name){
+        List<ServiceModelDto> serviceModelDtos = this.apiRepository.findByApiName(name);
+        return  serviceModelDtos.stream().map(ServiceModelDto::getApis)
+                .flatMap(List::stream).collect(Collectors.toList()) ;}
+
+
 }

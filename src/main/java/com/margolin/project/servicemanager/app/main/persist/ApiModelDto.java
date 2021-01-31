@@ -7,8 +7,9 @@ import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
+
 @Data
-@Document(collection = "apis")
 public class ApiModelDto {
 
     @Transient
@@ -21,8 +22,8 @@ public class ApiModelDto {
     private String serviceName;
     private String payload;
     private String version;
-    @Id
-    private String id;
     private String initService;
     private String dest;
+    private LocalDate addedOn;
+
 }
