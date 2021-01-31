@@ -76,6 +76,13 @@ public class ServiceManagerController {
         return ResponseEntity.ok(apiModels);
     }
 
+    @GetMapping("/getAll")
+    public ResponseEntity<List<ServiceModel>> getAll(@RequestParam(defaultValue = "0",required = false)int page){
+        List<ServiceModelDto> services = this.applicationManager.getAllServices(page);
+        List<ServiceModel> models = this.mapperServiceModel.toModel(services);
+        return ResponseEntity.ok(models);
+    }
+
     private ServiceModelDto patchServiceModel( JsonPatch patchModels,  String serviceId) throws GeneralException {
         ServiceModelDto serviceById = this.applicationManager.getServiceById(serviceId);
         ServiceModel serviceModel = this.mapperServiceModel.toModel(serviceById);

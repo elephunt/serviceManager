@@ -15,4 +15,6 @@ public interface IApplicationManager {
     ServiceModelDto updateService(ServiceModelDto updatedServiceModel);
 
     List<ApiModelDto> getApiByName(String name);
+
+    List<ServiceModelDto> getAllServices(int page);
 }

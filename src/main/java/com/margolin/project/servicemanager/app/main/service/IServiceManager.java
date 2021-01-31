@@ -12,4 +12,6 @@ public interface IServiceManager {
     ServiceModelDto updateModel(ServiceModelDto updatedServiceModel);
 
     List<ServiceModelDto> findServiceThatHaveApi(String apiName);
+
+    List<ServiceModelDto> getAll(int page);
 }

@@ -114,4 +114,11 @@ class ServiceManagerApplicationTests {
         }
         Assertions.assertTrue(found);
     }
+
+    @Test
+    public void getAll(){
+        ResponseEntity<List<ServiceModel>> all = this.managerController.getAll(0);
+        List<ServiceModel> body = all.getBody();
+        Assertions.assertFalse(CollectionUtils.isEmpty(body));
+    }
 }

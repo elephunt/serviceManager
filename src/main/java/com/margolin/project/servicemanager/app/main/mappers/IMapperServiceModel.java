@@ -7,6 +7,8 @@ import com.margolin.project.servicemanager.app.main.persist.ApiModelDto;
 import com.margolin.project.servicemanager.app.main.persist.ServiceModelDto;
 import org.mapstruct.*;
 
+import java.util.List;
+
 @Mapper(unmappedTargetPolicy = ReportingPolicy.WARN,
         componentModel = "spring",
         implementationName = "mapperServiceModelImpl",
@@ -19,6 +21,8 @@ public abstract class IMapperServiceModel {
     public abstract ServiceModel toModel(ServiceModelDto modelDto);
 
     public  abstract  ServiceModelDto toDto(ServiceModel serviceModel);
+
+    public abstract List<ServiceModel> toModel(List<ServiceModelDto> serviceModelList);
 
     @AfterMapping
     protected void setResource(ServiceModel serviceModelRequest,@MappingTarget ServiceModelDto serviceModelDto) {

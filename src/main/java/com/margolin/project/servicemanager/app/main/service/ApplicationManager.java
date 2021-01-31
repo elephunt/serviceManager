@@ -41,4 +41,10 @@ public class ApplicationManager implements IApplicationManager {
     public List<ApiModelDto> getApiByName(String name) {
         return  this.apiService.getApiByName(name);
     }
+
+    @Override
+    public List<ServiceModelDto> getAllServices(int page) {
+        List<ServiceModelDto> services  = this.serviceManager.getAll(page);
+        return services;
+    }
 }

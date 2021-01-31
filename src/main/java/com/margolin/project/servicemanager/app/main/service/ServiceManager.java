@@ -4,6 +4,8 @@ import com.margolin.project.servicemanager.app.main.persist.ServiceModelDto;
 import com.margolin.project.servicemanager.app.main.repository.ServiceRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -41,5 +43,12 @@ public class ServiceManager implements IServiceManager {
     @Override
     public List<ServiceModelDto> findServiceThatHaveApi(String apiName){
        return this.serviceRepository.findByApiName(apiName);
+    }
+
+    @Override
+    public List<ServiceModelDto> getAll(int page) {
+        PageRequest pageRequest = PageRequest.of(page, 25);
+        List<ServiceModelDto> content = this.serviceRepository.findAll(pageRequest).getContent();
+        return content;
     }
 }
